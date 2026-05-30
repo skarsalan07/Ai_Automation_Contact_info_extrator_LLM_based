@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: prospect-agent-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: DATABASE_URL
+        value: sqlite:///./data/prospects.db
+      - key: CORS_ORIGINS
+        value: https://prospect-agent.vercel.app,http://localhost:5173
+      - key: LOG_LEVEL
+        value: INFO
+      - key: REQUEST_TIMEOUT
+        value: "20"
+      - key: MAX_PAGES_PER_SITE
+        value: "6"
+      - key: MAX_CONTEXT_WORDS
+        value: "2800"
